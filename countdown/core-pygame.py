@@ -38,7 +38,7 @@ counter = Counter(INITIAL_COUNTER, WARNING_LIMIT, DANGER_LIMIT)
 
 def draw(background, counter):
     # Display some text
-    font = pygame.font.Font(None, 256)
+    font = pygame.font.Font(None, 512)
     text = font.render(counter.text, 1, counter.color)
     textpos = text.get_rect()
     textpos.centerx = background.get_rect().centerx
