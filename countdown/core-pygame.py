@@ -53,6 +53,7 @@ def draw(background, counter):
     background.blit(text, textpos)
 
 # Main loop
+lastText = None
 while not DONE:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -70,9 +71,8 @@ while not DONE:
 
     background.fill((0, 0, 0))
     if IS_READY:
-        draw(background, counter)
+        if lastText == None or counter.text != lastText:
+            draw(background, counter)
+            screen.blit(background, (0, 0))
+            pygame.display.flip()
         counter.update()
-    time.sleep(0.1)
-
-    screen.blit(background, (0, 0))
-    pygame.display.flip()
