@@ -34,7 +34,8 @@ class pyscope:
 
         size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
         print "Framebuffer size: %d x %d" % (size[0], size[1])
-        self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
+        flags = pygame.FULLSCREEN | pygame.DOUBLEBUF
+        self.screen = pygame.display.set_mode(size, flags)
         # Clear the screen to start
         self.screen.fill((0, 0, 0))
         # Initialise font support
