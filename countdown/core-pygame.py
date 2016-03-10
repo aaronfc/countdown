@@ -71,10 +71,12 @@ while not DONE:
                     counter.start()
             elif event.key == K_r:
                 counter.reset()
+    pygame.event.pump()
 
     background.fill((0, 0, 0))
     if IS_READY:
         if lastText == None or counter.text != lastText:
+            print "Repaint " + counter.text
             draw(background, counter)
             screen.blit(background, (0, 0))
             pygame.display.flip()
