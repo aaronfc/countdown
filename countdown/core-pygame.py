@@ -61,16 +61,20 @@ while not DONE:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             DONE = True
+            break
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 DONE = True
+                break
             elif event.key == K_SPACE:
                 if counter.isRunning():
                     counter.stop()
                 else:
                     counter.start()
+                break
             elif event.key == K_r:
                 counter.reset()
+                break
     pygame.event.pump()
 
     if IS_READY:
