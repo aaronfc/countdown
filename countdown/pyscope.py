@@ -32,7 +32,8 @@ class pyscope:
             if not found:
                 raise Exception('No suitable video driver found!')
 
-        size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+        #size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+        size = (320, 200)
         print "Framebuffer size: %d x %d" % (size[0], size[1])
         flags = pygame.FULLSCREEN | pygame.DOUBLEBUF
         self.screen = pygame.display.set_mode(size, flags)
