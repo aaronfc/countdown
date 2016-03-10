@@ -78,4 +78,5 @@ while not DONE:
             draw(background, counter)
             screen.blit(background, (0, 0))
             pygame.display.flip()
+        lastText = counter.text
         counter.update()
