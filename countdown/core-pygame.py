@@ -21,19 +21,13 @@ pygame.display.set_caption('#HMU Timer')
 pygame.event.set_allowed([QUIT, KEYDOWN])
 screen.set_alpha(None)
 
-# Initialize background
-background = pygame.Surface(screen.get_size())
-background = background.convert()
-background.fill((0, 0, 0))
-
 # Display welcome text
 font = pygame.font.Font(None, 512)
 text = font.render("#HMU28", 1, (255, 255, 255))
 textpos = text.get_rect()
-textpos.centerx = background.get_rect().centerx
-textpos.centery = background.get_rect().centery
-background.blit(text, textpos)
-screen.blit(background, (0,0))
+textpos.centerx = screen.get_rect().centerx
+textpos.centery = screen.get_rect().centery
+screen.blit(text, textpos)
 pygame.display.flip()
 time.sleep(WELCOME_TIME)
 
@@ -80,9 +74,8 @@ while not DONE:
     if IS_READY:
         if lastText == None or counter.text != lastText:
             print "Repaint " + counter.text
-            background.fill((0, 0, 0))
-            draw(background, counter)
-            screen.blit(background, (0, 0))
+            screen.fill((0, 0, 0))
+            draw(screen, counter)
             pygame.display.flip()
         lastText = counter.text
         counter.update()
