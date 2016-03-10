@@ -72,6 +72,7 @@ while not DONE:
     if IS_READY:
         draw(background, counter)
         counter.update()
+    time.sleep(0.5)
 
     screen.blit(background, (0, 0))
     pygame.display.flip()
