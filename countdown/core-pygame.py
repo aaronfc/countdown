@@ -13,11 +13,11 @@ WARNING_LIMIT = 60
 DANGER_LIMIT = 30
 WELCOME_TIME = 1
 
+# Parse arguments
 parser = argparse.ArgumentParser(description='Start a countdown interactive interface.')
 parser.add_argument('--counter', '-c', type=int, default=INITIAL_COUNTER, help='Amount of seconds for the timer')
 parser.add_argument('--warning', '-w', type=int, default=WARNING_LIMIT, help='Time limit to start warning signal')
 parser.add_argument('--danger', '-d', type=int, default=DANGER_LIMIT, help='Time limit to start danger signal')
-
 args = parser.parse_args()
 
 # Create an instance of the PyScope class
@@ -48,6 +48,7 @@ titleTextpos.centery = 100
 screen.blit(titleText, titleTextpos)
 pygame.display.flip()
 
+# Initialize counter instance
 counter = Counter(args.counter, args.warning, args.danger)
 
 def draw(background, counter):
