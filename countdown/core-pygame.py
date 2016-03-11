@@ -72,7 +72,7 @@ while not DONE:
                 else:
                     counter.start()
                 break
-            elif event.key == K_r:
+            elif event.key == K_r or event.key == K_UP:
                 counter.reset()
                 break
     pygame.event.pump()
