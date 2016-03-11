@@ -5,6 +5,8 @@ from pyscope import pyscope
 from Counter import Counter, CounterEvents
 import argparse
 import sys
+from enum import Enum
+import random
 from pygame.locals import *
 
 IS_READY = True
@@ -13,8 +15,22 @@ WARNING_LIMIT = 60
 DANGER_LIMIT = 30
 WELCOME_TIME = 1
 
+
+class ExternalEvents(Enum):
+    NEW_HEART = 'heart'
+
+class External:
+    def __init__(self):
+        pass
+
+    def getEvents(self):
+        # TBD
+        return []
+
+
 class Core:
     def __init__(self, args):
+        self.external = External()
         self.args = self._parse_args(args)
         self.scope = self._init_scope()
         self.sounds = self._init_sounds()
@@ -86,16 +102,14 @@ class Core:
 
             if IS_READY:
                 if lastText == None or self.counter.text != lastText:
-                    print "Repaint " + self.counter.text
                     self.scope.screen.fill((0, 0, 0))
                     rectangle = self._draw_counter()
                     # Repaint middle section
                     pygame.display.update(pygame.Rect(0, rectangle.top, self.scope.screen.get_rect().width, rectangle.height))
                 lastText = self.counter.text
                 events = self.counter.update()
+                events.extend(self.external.getEvents())
                 self._handle_events(events)
-
-
 
     def _draw_counter(self):
         # Display some text
@@ -118,6 +132,20 @@ class Core:
             # Sounds
             if event == CounterEvents.STATUS_CHANGE_TIME_OUT:
                 self.sounds['time-out'].play()
+            elif event == ExternalEvents.NEW_HEART:
+                self._add_heart()
+
+    def _add_heart(self):
+        rectangles = []
+        point = (random.randint(0, self.scope.screen.get_rect().width), random.randint(0, self.scope.screen.get_rect().height))
+        size = random.randint(20, 100)
+        # Ugly heart definition
+        rectangles.append(pygame.draw.polygon(self.scope.screen, (255, 0, 0), [(point[0]-size/2, point[1]), (point[0]+size/2, point[1]), (point[0], point[1]+size/2)]))
+        rectangles.append(pygame.draw.circle(self.scope.screen, (255, 0, 0), (point[0]+size/4, point[1]-2), size/4-1))
+        rectangles.append(pygame.draw.circle(self.scope.screen, (255, 0, 0), (point[0]-size/4, point[1]-2), size/4-1))
+        # Repaint
+        pygame.display.update(rectangles)
+
 
 if __name__ == "__main__":
     core = Core(sys.argv[1:])
