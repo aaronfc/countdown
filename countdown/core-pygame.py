@@ -82,6 +82,6 @@ while not DONE:
             print "Repaint " + counter.text
             screen.fill((0, 0, 0))
             rectangle = draw(screen, counter)
-            pygame.display.update()
+            pygame.display.update(rectangle)
         lastText = counter.text
         counter.update()
