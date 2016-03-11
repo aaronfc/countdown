@@ -44,7 +44,6 @@ pygame.display.flip()
 counter = Counter(INITIAL_COUNTER, WARNING_LIMIT, DANGER_LIMIT)
 
 def draw(background, counter):
-    rectangles = []
     # Display some text
     font = pygame.font.Font(None, 512)
     text = font.render(counter.text, 1, counter.color)
@@ -52,8 +51,7 @@ def draw(background, counter):
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery
     background.blit(text, textpos)
-    rectangles.append(textpos)
-    return rectangles
+    return textpos
 
 # Main loop
 lastText = None
@@ -81,7 +79,7 @@ while not DONE:
         if lastText == None or counter.text != lastText:
             print "Repaint " + counter.text
             screen.fill((0, 0, 0))
-            for rectangle in draw(screen, counter):
-                pygame.display.update(rectangle)
+            rectangle = draw(screen, counter)
+            pygame.display.update(rectangle)
         lastText = counter.text
         counter.update()
