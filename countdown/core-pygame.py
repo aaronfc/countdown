@@ -2,7 +2,7 @@
 import pygame
 import time
 from pyscope import pyscope
-from Counter import Counter
+from Counter import Counter, CounterEvents
 import argparse
 import sys
 from pygame.locals import *
@@ -16,8 +16,9 @@ WELCOME_TIME = 1
 class Core:
     def __init__(self, args):
         self.args = self._parse_args(args)
-        self.counter = Counter(self.args.counter, self.args.warning, self.args.danger)
         self.scope = self._init_scope()
+        self.sounds = self._init_sounds()
+        self.counter = Counter(self.args.counter, self.args.warning, self.args.danger)
         self.done = False
 
     def run(self):
@@ -91,7 +92,9 @@ class Core:
                     # Repaint middle section
                     pygame.display.update(pygame.Rect(0, rectangle.top, self.scope.screen.get_rect().width, rectangle.height))
                 lastText = self.counter.text
-                self.counter.update()
+                events = self.counter.update()
+                self._handle_events(events)
+
 
 
     def _draw_counter(self):
@@ -104,6 +107,17 @@ class Core:
         self.scope.screen.blit(text, textpos)
         #background.blit(titleText, titleTextpos)
         return textpos
+
+    def _init_sounds(self):
+        sounds = dict()
+        sounds['time-out'] = pygame.mixer.Sound('emergency006.wav')
+        return sounds
+
+    def _handle_events(self, events):
+        for event in events:
+            # Sounds
+            if event == CounterEvents.STATUS_CHANGE_TIME_OUT:
+                self.sounds['time-out'].play()
 
 if __name__ == "__main__":
     core = Core(sys.argv[1:])

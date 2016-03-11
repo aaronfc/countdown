@@ -1,5 +1,14 @@
 import time
 import math
+from enum import Enum
+
+
+class CounterEvents(Enum):
+    STATUS_CHANGE_WARNING = "sc-warning"
+    STATUS_CHANGE_DANGER = "sc-danger"
+    STATUS_CHANGE_TIME_OUT = "sc-timeout"
+    STATUS_CHANGE_NORMAL = "sc-normal"
+
 
 class Counter():
     def __init__(self, initialValue, warningLimit, dangerLimit):
@@ -11,6 +20,7 @@ class Counter():
         self.lastTick = None
         self.text = ""
         self.color = (255, 255, 255)
+        self.status = "normal"
 
     def start(self):
         if self.currentValue == 0:
@@ -27,6 +37,7 @@ class Counter():
         self.running = False
 
     def update(self):
+        events = []
         if self.running:
             newTick = time.time()
             self.currentValue -= newTick - self.lastTick
@@ -35,16 +46,30 @@ class Counter():
             usefulValue = math.ceil(self.currentValue)
             if usefulValue <= self.dangerLimit:
                 self.color = (255,50,50)
+                if self.status != "danger":
+                    self.status = "danger"
+                    events.append(CounterEvents.STATUS_CHANGE_DANGER)
             elif usefulValue <= self.warningLimit:
                 self.color = (255,255,100)
+                if self.status != "warning":
+                    self.status = "warning"
+                    events.append(CounterEvents.STATUS_CHANGE_WARNING)
             else:
                 self.color = (255, 255, 255)
+                if self.status != "normal":
+                    self.status = "normal"
+                    events.append(CounterEvents.STATUS_CHANGE_NORMAL)
             self.text = time.strftime("%Mm%Ss", time.gmtime(usefulValue))
         else:
             self.currentValue = 0
             self.running = False
             self.text = "TIME'S UP!"
             self.color = (148, 190, 0) # Tuenti Green
+            if self.status != "time-out":
+                self.status = "time-out"
+                events.append(CounterEvents.STATUS_CHANGE_TIME_OUT)
+        return events
+
 
     def isRunning(self):
         return self.running

@@ -40,6 +40,7 @@ class pyscope:
         self.screen.fill((0, 0, 0))
         # Initialise font support
         pygame.font.init()
+        pygame.mixer.init()
         # Render the screen
         pygame.display.update()
 
