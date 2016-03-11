@@ -4,6 +4,7 @@ import random
 import time
 from pyscope import pyscope
 from Counter import Counter
+import pprint
 from pygame.locals import *
 
 DONE = False
@@ -34,11 +35,11 @@ time.sleep(WELCOME_TIME)
 # Display title text
 screen.fill((0, 0, 0))
 font = pygame.font.Font(None, 128)
-text = font.render("#HMU28", 1, (255, 255, 255))
-textpos = text.get_rect()
-textpos.centerx = screen.get_rect().width - textpos.width // 2 - 100
-textpos.centery = 100
-screen.blit(text, textpos)
+titleText = font.render("#HMU28", 1, (255, 255, 255))
+titleTextpos = titleText.get_rect()
+titleTextpos.centerx = screen.get_rect().width - titleTextpos.width // 2 - 100
+titleTextpos.centery = 100
+screen.blit(titleText, titleTextpos)
 pygame.display.flip()
 
 counter = Counter(INITIAL_COUNTER, WARNING_LIMIT, DANGER_LIMIT)
@@ -51,6 +52,7 @@ def draw(background, counter):
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery
     background.blit(text, textpos)
+    background.blit(titleText, titleTextpos)
     return textpos
 
 # Main loop
@@ -80,7 +82,6 @@ while not DONE:
             print "Repaint " + counter.text
             screen.fill((0, 0, 0))
             rectangle = draw(screen, counter)
-            print rectangle
-            pygame.display.update(rectangle)
+            pygame.display.update()
         lastText = counter.text
         counter.update()
