@@ -73,7 +73,7 @@ class Core:
                     self.done = True
                     break
                 elif event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
+                    if event.key == K_ESCAPE or event.key == K_q:
                         self.done = True
                     elif event.key == K_SPACE:
                         if self.counter.isRunning():
