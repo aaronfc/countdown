@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 import pygame
-import random
 import time
 from pyscope import pyscope
 from Counter import Counter
-import pprint
+import argparse
 from pygame.locals import *
 
 DONE = False
 IS_READY = True
-INITIAL_COUNTER = 10
-WARNING_LIMIT = 5
-DANGER_LIMIT = 3
+INITIAL_COUNTER = 300
+WARNING_LIMIT = 60
+DANGER_LIMIT = 30
 WELCOME_TIME = 1
+
+parser = argparse.ArgumentParser(description='Start a countdown interactive interface.')
+parser.add_argument('--counter', '-c', type=int, default=INITIAL_COUNTER, help='Amount of seconds for the timer')
+parser.add_argument('--warning', '-w', type=int, default=WARNING_LIMIT, help='Time limit to start warning signal')
+parser.add_argument('--danger', '-d', type=int, default=DANGER_LIMIT, help='Time limit to start danger signal')
+
+args = parser.parse_args()
 
 # Create an instance of the PyScope class
 scope = pyscope()
@@ -42,7 +48,7 @@ titleTextpos.centery = 100
 screen.blit(titleText, titleTextpos)
 pygame.display.flip()
 
-counter = Counter(INITIAL_COUNTER, WARNING_LIMIT, DANGER_LIMIT)
+counter = Counter(args.counter, args.warning, args.danger)
 
 def draw(background, counter):
     # Display some text
