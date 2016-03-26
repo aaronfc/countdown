@@ -1,0 +1,63 @@
+#:kivy 1.0.9
+
+#<PongGame>:
+#    canvas:
+#        Rectangle:
+#            pos: self.center_x - 5, 0
+#            size: 10, self.height
+#
+#    Label:
+#        font_size: 70
+#        center_x: root.width / 4
+#        top: root.top - 50
+#        text: "0"
+#
+#    Label:
+#        font_size: 70
+#        center_x: root.width * 3 / 4
+#        top: root.top - 50
+#        text: "0"
+
+<WelcomeScreen>:
+    FloatLayout:
+        Label:
+            id: title_label
+            font_size: 160
+            text: "#HMU28"
+        Button:
+            text: 'Goto Main'
+            on_press: root.manager.current = 'main'
+            size_hint: .2, .05
+            pos: root.width - 20 - self.width, 20
+
+<MainScreen>:
+    counter: counter_item
+    FloatLayout:
+        CounterWidget:
+            id: counter_item
+        Button:
+            text: 'Back to welcome'
+            on_press: root.manager.current = 'welcome'
+            size_hint: .2, .05
+            pos: root.width - 20 - self.width, 20
+
+<CounterWidget>:
+    Label:
+        id: counter_label
+        font_size: 160
+        center_x: root.width / 2
+        top: root.top / 2 + self.height / 2
+        text: "05m00s"
+
+<HeartImage>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: root.angle
+            axis: 0, 0, 1
+            origin: root.center
+    canvas.after:
+        PopMatrix
+    source: 'heart.png'
+    size_hint: None, None
+    allow_stretch: True

@@ -3,9 +3,9 @@ import pygame
 import time
 from pyscope import pyscope
 from Counter import Counter, CounterEvents
+from External import External, ExternalEvents
 import argparse
 import sys
-from enum import Enum
 import random
 from pygame.locals import *
 
@@ -14,19 +14,6 @@ INITIAL_COUNTER = 300
 WARNING_LIMIT = 60
 DANGER_LIMIT = 30
 WELCOME_TIME = 1
-
-
-class ExternalEvents(Enum):
-    NEW_HEART = 'heart'
-
-class External:
-    def __init__(self):
-        pass
-
-    def getEvents(self):
-        # TBD
-        return []
-
 
 class Core:
     def __init__(self, args):
@@ -108,7 +95,7 @@ class Core:
                     pygame.display.update(pygame.Rect(0, rectangle.top, self.scope.screen.get_rect().width, rectangle.height))
                 lastText = self.counter.text
                 events = self.counter.update()
-                events.extend(self.external.getEvents())
+                events.extend(self.external.get_events())
                 self._handle_events(events)
 
     def _draw_counter(self):
