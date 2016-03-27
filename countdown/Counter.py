@@ -1,6 +1,7 @@
 import time
 import math
 from enum import Enum
+import argparse
 
 
 class CounterEvents(Enum):
@@ -10,13 +11,31 @@ class CounterEvents(Enum):
     STATUS_CHANGE_NORMAL = "sc-normal"
 
 
+class CounterOptions:
+    def __init__(self):
+        self.INITIAL_COUNTER = 300
+        self.WARNING_LIMIT = 60
+        self.DANGER_LIMIT = 30
+
+    def load(self, args):
+        parser = argparse.ArgumentParser(description='Start a countdown interactive interface.')
+        parser.add_argument('--counter', '-c', type=int, default=self.INITIAL_COUNTER, help='Amount of seconds for the timer')
+        parser.add_argument('--warning', '-w', type=int, default=self.WARNING_LIMIT, help='Time limit to start warning signal')
+        parser.add_argument('--danger', '-d', type=int, default=self.DANGER_LIMIT, help='Time limit to start danger signal')
+        parsed = parser.parse_args(args)
+        self.INITIAL_COUNTER = parsed.counter
+        self.WARNING_LIMIT = parsed.warning
+        self.DANGER_LIMIT = parsed.danger
+        return self
+
+
 class Counter():
-    def __init__(self, initialValue, warningLimit, dangerLimit):
-        self.initialValue = initialValue
+    def __init__(self, options):
+        self.initialValue = options.INITIAL_COUNTER
         self.running = False
-        self.currentValue = initialValue
-        self.dangerLimit = dangerLimit
-        self.warningLimit = warningLimit
+        self.currentValue = options.INITIAL_COUNTER
+        self.dangerLimit = options.DANGER_LIMIT
+        self.warningLimit = options.WARNING_LIMIT
         self.lastTick = None
         self.text = ""
         self.color = (255, 255, 255)

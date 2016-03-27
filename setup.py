@@ -10,7 +10,8 @@ setup(name='countdown',
       packages=['countdown'],
       install_requires=[
             'pygame',
-            'enum34'
+            'enum34',
+            'argparse'
       ],
       dependency_links=['https://bitbucket.org/pygame/pygame/get/release_1_9_1release.zip#egg=pygame-1.9.1release'],
       zip_safe=False)
