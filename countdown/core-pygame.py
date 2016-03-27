@@ -2,7 +2,7 @@
 import pygame
 import time
 from pyscope import pyscope
-from Counter import Counter, CounterEvents
+from Counter import Counter, CounterOptions, CounterEvents
 from External import External, ExternalEvents
 import argparse
 import sys
@@ -18,10 +18,10 @@ WELCOME_TIME = 1
 class Core:
     def __init__(self, args):
         self.external = External()
-        self.args = self._parse_args(args)
+        self.ops = self._parse_args(args)
         self.scope = self._init_scope()
         self.sounds = self._init_sounds()
-        self.counter = Counter(self.args.counter, self.args.warning, self.args.danger)
+        self.counter = Counter(self.ops)
         self.done = False
 
     def run(self):
@@ -34,7 +34,13 @@ class Core:
         parser.add_argument('--counter', '-c', type=int, default=INITIAL_COUNTER, help='Amount of seconds for the timer')
         parser.add_argument('--warning', '-w', type=int, default=WARNING_LIMIT, help='Time limit to start warning signal')
         parser.add_argument('--danger', '-d', type=int, default=DANGER_LIMIT, help='Time limit to start danger signal')
-        return parser.parse_args(args)
+        parsed = parser.parse_args(args)
+        options = CounterOptions()
+        options.DANGER_LIMIT = parsed.danger
+        options.WARNING_LIMIT = parsed.warning
+        options.INITIAL_COUNTER = parsed.counter
+        return options
+
 
     def _init_scope(self):
         # Create an instance of the PyScope class
