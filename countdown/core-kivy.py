@@ -78,13 +78,11 @@ class MainScreen(Screen):
                 self._add_new_heart()
 
     def _add_new_heart(self):
-        print "Self width: {}".format(self.width)
         position = (randint(self.width/2, self.width), randint(0, self.height/2))
         random_size = randint(30, 60)
-        print "New heart at {} with size {}".format(position, random_size)
         size = [random_size, random_size]
         color = [randint(0, 100)/100., randint(0, 100)/100., randint(0, 100)/100., 1]
-        print color
+        # print "New heart at {} with size {} and color {}".format(position, random_size, color)
         wimg = HeartImage(angle=randint(-MAX_HEART_ANGLE, MAX_HEART_ANGLE), center=position, size=size, color=color)
         self.add_widget(wimg)
         self.hearts.append(wimg)
@@ -96,27 +94,26 @@ class MainScreen(Screen):
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == "s":
             if self.counter.isRunning():
-                #print "Stopping"
+                # print "Stopping"
                 self.counter.stop()
             else:
-                #print "Starting"
+                # print "Starting"
                 self.counter.start()
         elif keycode[1] == 'r':
-            #print "Resetting"
+            # print "Resetting"
             self.counter.reset()
         elif keycode[1] == 'h':
-            #print "Heart created manually"
+            # print "Heart created manually"
             self._add_new_heart()
         elif keycode[1] == 'escape':
             self.counter.stop()
             self.counter.reset()
             self.manager.current = 'welcome'
-            #print "Back to welcome"
+            # print "Back to welcome"
         return True
 
 
 class WelcomeScreen(Screen):
-
     def __init__(self, **kwargs):
         super(WelcomeScreen, self).__init__(**kwargs)
         self.set_title(randint(10, 50))
