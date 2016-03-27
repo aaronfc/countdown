@@ -160,3 +160,11 @@ if __name__ == '__main__':
     Window.fullscreen = FULLSCREEN
 
     CountdownApp(counter).run()
+
+
+# TODO LIST
+# - Manage CounterEvents to play sounds and maybe move color logic here (representation thing)
+# - Cleanup hearts code and isolate logic from representation
+# - Prepare to listen to ExternalEvents (REST API)
+# - Extra features: Support negative feedback, allow text comments (maybe spoken?), Clap-o-meter (mic),
+#   Improve UI (keyboard keys), Reading titles for presentations from external source,...
