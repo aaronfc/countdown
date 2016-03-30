@@ -78,7 +78,7 @@ class MainScreen(Screen):
                 self._add_new_heart()
 
     def _add_new_heart(self):
-        position = (randint(self.width/2, self.width), randint(0, self.height/2))
+        position = (randint(0, self.width), randint(0, self.height))
         random_size = randint(30, 60)
         size = [random_size, random_size]
         color = [randint(0, 100)/100., randint(0, 100)/100., randint(0, 100)/100., 1]
