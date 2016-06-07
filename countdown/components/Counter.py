@@ -2,6 +2,7 @@ import time
 import math
 from enum import Enum
 import argparse
+from kivy.uix.widget import Widget
 
 
 class CounterEvents(Enum):
@@ -89,9 +90,17 @@ class Counter():
                 events.append(CounterEvents.STATUS_CHANGE_TIME_OUT)
         return events
 
-
     def isRunning(self):
         return self.running
 
     def getValue(self):
         return self.currentValue
+
+
+class CounterWidget(Widget):
+    def __init__(self, **kwargs):
+        super(CounterWidget, self).__init__(**kwargs)
+
+    def update(self, text, color):
+        self.ids.counter_label.text = text
+        self.ids.counter_label.color = (color[0] / 255., color[1] / 255., color[2] / 255., 1)
