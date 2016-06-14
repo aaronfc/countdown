@@ -1,5 +1,4 @@
 from enum import Enum
-from random import randint
 
 
 class ExternalEvents(Enum):
@@ -7,13 +6,15 @@ class ExternalEvents(Enum):
 
 
 class External:
-    def __init__(self):
-        pass
+    def __init__(self, queue):
+        self.queue = queue
 
     def get_events(self):
         events = []
-        num = randint(0, 100)
-        #print "Generating " + str(num)
-        if num < 1:
-            events.append(ExternalEvents.NEW_HEART)
+
+        if not self.queue.empty():
+            element = self.queue.get_nowait()
+            if element is not None:
+                events.append(ExternalEvents.NEW_HEART)
+
         return events

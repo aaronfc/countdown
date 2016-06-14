@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       <meta name="viewport" content="width=device-width, user-scalable=no">
+       <style type="text/css">
+            html,body { height: 100%; width: 100%; margin: 0px; padding: 0px; }
+            #full { height: 100%; width: 100%;}
+            #dabutton { height: 90%; width: 100%; font-size: 200px;}
+            h1 { height: 10%; margin: 0px;}
+       </style>
+       <script type="text/javascript">
+        function like() {
+           var xmlhttp;
+
+           if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+           } else {
+                // code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+           }
+
+           xmlhttp.onreadystatechange = function() {
+               if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                   if(xmlhttp.status == 200){
+                    console.log("Yihaa!");
+                   }
+                   else {
+                   console.log("Oops!");
+                   }
+               }
+           };
+
+            xmlhttp.open("GET", "a/like", true);
+            xmlhttp.send();
+        }
+       </script>
+   </head>
+   <body>
+      <div id="full">
+          <h1>HMU</h1>
+          <button id="dabutton" onclick='like();'>&#9829;</button>
+      </div>
+   </body>
+</html>

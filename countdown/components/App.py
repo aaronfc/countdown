@@ -8,13 +8,14 @@ from ..screens.WelcomeScreen import WelcomeScreen
 
 class CountdownApp(App):
 
-    def __init__(self, counter):
+    def __init__(self, counter, queue):
         super(CountdownApp, self).__init__()
+        self.queue = queue
         self.counter = counter
 
     def build(self):
         # Create screens
-        main_screen = MainScreen(self.counter, name='main')
+        main_screen = MainScreen(self.counter, self.queue, name='main')
         welcome_screen = WelcomeScreen(name='welcome')
         # Create the screen manager
         sm = ScreenManager(transition=FallOutTransition())

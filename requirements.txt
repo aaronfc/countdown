@@ -3,3 +3,4 @@ setuptools == 18.3.1
 cython == 0.24
 enum == 0.4.6
 hg+http://bitbucket.org/pygame/pygame@1.9.2.dev.1
+tornado === 4.3

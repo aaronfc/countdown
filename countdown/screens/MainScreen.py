@@ -11,11 +11,11 @@ from countdown.sources.External import External, ExternalEvents
 
 class MainScreen(Screen):
     counter_widget = ObjectProperty(None)
-    external = External()  # TODO Inject this on constructor
     hearts = []
 
-    def __init__(self, counter, **kwargs):
+    def __init__(self, counter, queue, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
+        self.external = External(queue)
         self.counter = counter
         self.running = False
 
