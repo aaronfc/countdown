@@ -1,6 +1,7 @@
+cython == 0.24
 Kivy == 1.9.1
 setuptools == 18.3.1
-cython == 0.24
 enum == 0.4.6
-hg+http://bitbucket.org/pygame/pygame@1.9.2.dev.1
-tornado === 4.3
+hg+http://bitbucket.org/pygame/pygame
+websocket-client == 0.37.0
+socketIO-client == 0.6.6

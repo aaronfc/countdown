@@ -1,23 +1,26 @@
+from __future__ import unicode_literals
 from random import randint
 
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
+from kivy.core.audio import SoundLoader
 
 from countdown.components.Heart import HeartImage
 from countdown.config import MAX_HEART_ANGLE
 from countdown.sources.External import External, ExternalEvents
-
+from countdown.components.Counter import CounterEvents
 
 class MainScreen(Screen):
     counter_widget = ObjectProperty(None)
     hearts = []
 
-    def __init__(self, counter, queue, **kwargs):
+    def __init__(self, counter, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
-        self.external = External(queue)
+        self.external = External()
         self.counter = counter
         self.running = False
+        self.timeout_sound = SoundLoader.load('assets/emergency006.wav')
 
     def update(self, dt):
         if self.running:
@@ -30,18 +33,26 @@ class MainScreen(Screen):
                 heart.update(dt)
 
     def on_enter(self):
+        self.external.start()
         self.running = True
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
     def on_leave(self):
+        self.external.stop()
         self.running = False
         Window.release_all_keyboards()
 
     def handle_events(self, events):
         for event in events:
+            #print "Event: {}".format(event)
             if event == ExternalEvents.NEW_HEART:
                 self._add_new_heart()
+            if event == CounterEvents.STATUS_CHANGE_TIME_OUT:
+                self.__play_timeout_sound()
+
+    def __play_timeout_sound(self):
+        self.timeout_sound.play()
 
     def _add_new_heart(self):
         position = (randint(0, self.width), randint(0, self.height))

@@ -15,8 +15,8 @@ class CounterEvents(Enum):
 class CounterOptions:
     def __init__(self):
         self.INITIAL_COUNTER = 300
-        self.WARNING_LIMIT = 60
-        self.DANGER_LIMIT = 30
+        self.WARNING_LIMIT = 30
+        self.DANGER_LIMIT = 15
 
     def load(self, args):
         parser = argparse.ArgumentParser(description='Start a countdown interactive interface.')
