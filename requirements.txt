@@ -5,3 +5,4 @@ enum == 0.4.6
 hg+http://bitbucket.org/pygame/pygame
 websocket-client == 0.37.0
 socketIO-client == 0.6.6
+mock == 2.0.0

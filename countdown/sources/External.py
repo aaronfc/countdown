@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
-from socketIO_client import SocketIO, LoggingNamespace
 from time import sleep
 from LoveSocket import LoveSocket
 
@@ -15,7 +14,7 @@ class External:
         self.events = []
 
     def get_events(self):
-        events = [ExternalEvents.NEW_HEART * self.love_socket.get_and_reset()]
+        events = [ExternalEvents.NEW_HEART] * self.love_socket.get_and_reset()
         return events
 
     def start(self):
