@@ -6,6 +6,7 @@ from LoveSocket import LoveSocket
 
 class ExternalEvents(Enum):
     NEW_HEART = u"♥"
+    NEW_POO = u"💩"
 
 
 class External:
@@ -14,7 +15,8 @@ class External:
         self.events = []
 
     def get_events(self):
-        events = [ExternalEvents.NEW_HEART] * self.love_socket.get_and_reset()
+        events = [ExternalEvents.NEW_HEART] * self.love_socket.reset_hearts()
+        events.extend([ExternalEvents.NEW_POO] * self.love_socket.reset_poos())
         return events
 
     def start(self):

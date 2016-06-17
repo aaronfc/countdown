@@ -22,7 +22,7 @@ class ExternalTest(unittest.TestCase):
         self.external.love_socket.stop.assert_called()
 
     def test_get_events_when_empty(self):
-        self.external.love_socket.get_and_reset.return_value = 0
+        self.external.love_socket.reset_hearts.return_value = 0
 
         output = self.external.get_events()
 
@@ -30,7 +30,7 @@ class ExternalTest(unittest.TestCase):
 
     def test_get_events_when_some_events_available(self):
         num_events = 2
-        self.external.love_socket.get_and_reset.return_value = num_events
+        self.external.love_socket.reset_hearts.return_value = num_events
 
         output = self.external.get_events()
 

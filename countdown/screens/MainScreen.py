@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from random import randint
+from random import randint, choice
 
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.core.audio import SoundLoader
 
 from countdown.components.Heart import HeartImage
+from countdown.components.Poo import PooImage
 from countdown.config import MAX_HEART_ANGLE
 from countdown.sources.External import External, ExternalEvents
 from countdown.components.Counter import CounterEvents
@@ -49,6 +50,8 @@ class MainScreen(Screen):
         for event in events:
             if event == ExternalEvents.NEW_HEART:
                 self.__add_new_heart()
+            elif event == ExternalEvents.NEW_POO:
+                self.__add_new_poo()
             elif event == CounterEvents.STATUS_CHANGE_TIME_OUT:
                 self.__play_timeout_sound()
 
@@ -65,11 +68,18 @@ class MainScreen(Screen):
 
     def __add_new_heart(self):
         position = (randint(0, self.width), randint(0, self.height))
-        random_size = randint(30, 60)
+        random_size = randint(60, 120)
         size = [random_size, random_size]
         color = [randint(0, 100)/100., randint(0, 100)/100., randint(0, 100)/100., 1]
-        # print "New heart at {} with size {} and color {}".format(position, random_size, color)
         wimg = HeartImage(angle=randint(-MAX_HEART_ANGLE, MAX_HEART_ANGLE), center=position, size=size, color=color)
+        self.add_widget(wimg)
+        self.hearts.append(wimg)
+
+    def __add_new_poo(self):
+        position = (randint(0, self.width), randint(0, self.height))
+        random_size = randint(60, 120)
+        size = [random_size, random_size]
+        wimg = PooImage(angle=randint(-MAX_HEART_ANGLE, MAX_HEART_ANGLE), center=position, size=size)
         self.add_widget(wimg)
         self.hearts.append(wimg)
 
@@ -91,6 +101,9 @@ class MainScreen(Screen):
         elif keycode[1] == 'h':
             # print "Heart created manually"
             self.__add_new_heart()
+        elif keycode[1] == 'x':
+            # print "Heart created manually"
+            self.__add_new_poo()
         elif keycode[1] == 'escape':
             self.counter.stop()
             self.counter.reset()
