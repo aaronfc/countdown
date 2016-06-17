@@ -17,16 +17,19 @@ class CounterOptions:
         self.INITIAL_COUNTER = 300
         self.WARNING_LIMIT = 30
         self.DANGER_LIMIT = 15
+        self.DEBUG = False
 
     def load(self, args):
         parser = argparse.ArgumentParser(description='Start a countdown interactive interface.')
         parser.add_argument('--counter', '-c', type=int, default=self.INITIAL_COUNTER, help='Amount of seconds for the timer')
         parser.add_argument('--warning', '-w', type=int, default=self.WARNING_LIMIT, help='Time limit to start warning signal')
         parser.add_argument('--danger', '-d', type=int, default=self.DANGER_LIMIT, help='Time limit to start danger signal')
+        parser.add_argument('--debug', action='store_true', help='Enable debug mode?')
         parsed = parser.parse_args(args)
         self.INITIAL_COUNTER = parsed.counter
         self.WARNING_LIMIT = parsed.warning
         self.DANGER_LIMIT = parsed.danger
+        self.DEBUG = parsed.debug
         return self
 
 

@@ -2,7 +2,7 @@
 from time import sleep
 import threading
 from socketIO_client import SocketIO
-
+from ..config import LOVE_SOCKET_URL
 
 class LoveSocket:
     def __init__(self):
@@ -10,9 +10,12 @@ class LoveSocket:
         self.hearts = 0
 
     def start(self):
-        self.io = SocketIO("https://tranquil-dusk-16736.herokuapp.com", verify=False)
+        threading.Thread(target=self.__start).start()
+
+    def __start(self):
+        self.io = SocketIO(LOVE_SOCKET_URL, verify=False)
         self.io.on("love", self.__add_love)
-        threading.Thread(target=self.io.wait).start()
+        self.io.wait()
 
     def stop(self):
         self.io.disconnect()
@@ -30,8 +33,6 @@ class LoveSocket:
 if __name__ == "__main__":
     import logging
     logging.basicConfig(level=logging.DEBUG)
-
-    import threading
 
     love_socket = LoveSocket()
     love_socket.start()

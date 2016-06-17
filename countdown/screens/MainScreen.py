@@ -20,41 +20,50 @@ class MainScreen(Screen):
         self.external = External()
         self.counter = counter
         self.running = False
-        self.timeout_sound = SoundLoader.load('assets/emergency006.wav')
+        self.timeout_sound = SoundLoader.load('assets/end-game-fail.wav')
 
     def update(self, dt):
         if self.running:
             events = self.counter.update()
             self.counter_widget.update(self.counter.text, self.counter.color)
             events.extend(self.external.get_events())
-            self.handle_events(events)
-            # This seems like na overkill update loop. They might be updated in batches somehow.
-            for heart in self.hearts:
-                heart.update(dt)
+            self.__handle_events(events)
+            self.__update_hearts(dt)
 
     def on_enter(self):
-        self.external.start()
         self.running = True
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
-        self._keyboard.bind(on_key_down=self._on_keyboard_down)
+        self._keyboard = Window.request_keyboard(self.__keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self.__on_keyboard_down)
+        self.external.start()
 
     def on_leave(self):
         self.external.stop()
         self.running = False
         Window.release_all_keyboards()
 
-    def handle_events(self, events):
+    '''
+     PRIVATE METHODS
+    '''
+
+    def __handle_events(self, events):
         for event in events:
-            #print "Event: {}".format(event)
             if event == ExternalEvents.NEW_HEART:
-                self._add_new_heart()
-            if event == CounterEvents.STATUS_CHANGE_TIME_OUT:
+                self.__add_new_heart()
+            elif event == CounterEvents.STATUS_CHANGE_TIME_OUT:
                 self.__play_timeout_sound()
+
+    def __update_hearts(self, dt):
+        # This seems like na overkill update loop. They might be updated in batches somehow.
+        for heart in self.hearts:
+            heart.update(dt)
+            if heart.opacity <= 0:
+                self.remove_widget(heart)
+        self.hearts = [heart for heart in self.hearts if heart.opacity > 0]
 
     def __play_timeout_sound(self):
         self.timeout_sound.play()
 
-    def _add_new_heart(self):
+    def __add_new_heart(self):
         position = (randint(0, self.width), randint(0, self.height))
         random_size = randint(30, 60)
         size = [random_size, random_size]
@@ -64,11 +73,11 @@ class MainScreen(Screen):
         self.add_widget(wimg)
         self.hearts.append(wimg)
 
-    def _keyboard_closed(self):
-        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+    def __keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self.__on_keyboard_down)
         self._keyboard = None
 
-    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+    def __on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == "s":
             if self.counter.isRunning():
                 # print "Stopping"
@@ -81,7 +90,7 @@ class MainScreen(Screen):
             self.counter.reset()
         elif keycode[1] == 'h':
             # print "Heart created manually"
-            self._add_new_heart()
+            self.__add_new_heart()
         elif keycode[1] == 'escape':
             self.counter.stop()
             self.counter.reset()
