@@ -1,8 +1,6 @@
-from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 
 from countdown.components.Heart import HeartImage
-from countdown.config import HMU_EDITION
 
 
 class SummaryScreen(Screen):

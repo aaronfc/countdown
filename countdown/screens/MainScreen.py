@@ -1,3 +1,4 @@
+from __future__ import print_function
 from __future__ import unicode_literals
 from random import randint, choice
 
@@ -29,7 +30,9 @@ class MainScreen(Screen):
 
     def update(self, dt):
         if self.running:
-            events = self.counter.update()
+            events = []
+            if self.counter.isRunning():
+                events.extend(self.counter.update())
             self.counter_widget.update(self.counter.text, self.counter.color)
             events.extend(self.external.get_events())
             self.__handle_events(events)
@@ -60,27 +63,34 @@ class MainScreen(Screen):
                 self.__add_new_poo()
             elif event == CounterEvents.STATUS_CHANGE_TIME_OUT:
                 self.__play_timeout_sound()
-                # Hearts
-                position = (self.width*4/10, self.height/4)
-                random_size = 100
-                size = [random_size, random_size]
-                color = [1., 0., 0., 1]
-                wimg = HeartImage(angle=0, center=position, size=size, color=color)
-                self.add_widget(wimg)
-                label = Label(text="{}".format(self.hearts_count), center=(position[0], position[1] - random_size*3/4), size=(100, 100), size_hint=(None, None), font_size=50)
-                self.add_widget(label)
-                self.summary_widgets.append(label)
-                self.summary_widgets.append(wimg)
-                # Poos
-                position = (self.width*6/10, self.height/4)
-                random_size = 100
-                size = [random_size, random_size]
-                wimg = PooImage(angle=0, center=position, size=size)
-                self.add_widget(wimg)
-                label = Label(text="{}".format(self.poos_count), center=(position[0], position[1] - random_size*3/4), size=(100, 100), size_hint=(None, None), font_size=50)
-                self.add_widget(label)
-                self.summary_widgets.append(label)
-                self.summary_widgets.append(wimg)
+                self.__show_counters()
+
+
+    def __show_counters(self):
+        # Hearts
+        position = (self.width * 4 / 10, self.height / 4)
+        random_size = 100
+        size = [random_size, random_size]
+        color = [1., 0., 0., 1]
+        wimg = HeartImage(angle=0, center=position, size=size, color=color)
+        self.add_widget(wimg)
+        label = Label(text="{}".format(self.hearts_count), center=(position[0], position[1] - random_size * 3 / 4),
+                      size=(100, 100), size_hint=(None, None), font_size=50)
+        self.add_widget(label)
+        self.summary_widgets.append(label)
+        self.summary_widgets.append(wimg)
+        # Poos
+        position = (self.width * 6 / 10, self.height / 4)
+        random_size = 100
+        size = [random_size, random_size]
+        wimg = PooImage(angle=0, center=position, size=size)
+        self.add_widget(wimg)
+        label = Label(text="{}".format(self.poos_count), center=(position[0], position[1] - random_size * 3 / 4),
+                      size=(100, 100), size_hint=(None, None), font_size=50)
+        self.add_widget(label)
+        self.summary_widgets.append(label)
+        self.summary_widgets.append(wimg)
+        print("Counters:\nHearts: {} Poos: {}".format(self.hearts_count, self.poos_count))
 
     def __update_hearts(self, dt):
         # This seems like na overkill update loop. They might be updated in batches somehow.
@@ -91,6 +101,7 @@ class MainScreen(Screen):
         self.hearts = [heart for heart in self.hearts if heart.opacity > 0]
 
     def __play_timeout_sound(self):
+        print("PLaying timeout")
         self.timeout_sound.play()
 
     def __add_new_heart(self):
@@ -117,10 +128,11 @@ class MainScreen(Screen):
         self._keyboard = None
 
     def __on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        if keycode[1] == "s" or keycode[1] == "spacebar":
+        if  keycode[1] == "spacebar":
             if self.counter.isRunning():
                 # print "Stopping"
                 self.counter.stop()
+                self.__show_counters()
             else:
                 # print "Starting"
                 self.counter.start()

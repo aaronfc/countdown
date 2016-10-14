@@ -41,7 +41,7 @@ class Counter():
         self.dangerLimit = options.DANGER_LIMIT
         self.warningLimit = options.WARNING_LIMIT
         self.lastTick = None
-        self.text = ""
+        self.text = "WELCOME"
         self.color = (255, 255, 255)
         self.status = "normal"
 
@@ -56,8 +56,16 @@ class Counter():
         self.lastTick = time.time()
         self.currentValue = self.initialValue
 
-    def stop(self):
+    def pause(self):
         self.running = False
+
+    def stop(self):
+        self.currentValue = 0
+        self.running = False
+        self.text = "WELL DONE!"
+        self.color = (148, 190, 0)  # Tuenti Green
+        if self.status != "time-out":
+            self.status = "time-out"
 
     def update(self):
         events = []
@@ -87,10 +95,10 @@ class Counter():
             self.currentValue = 0
             self.running = False
             self.text = "TIME'S UP!"
-            self.color = (148, 190, 0) # Tuenti Green
+            self.color = (148, 190, 0)  # Tuenti Green
             if self.status != "time-out":
                 self.status = "time-out"
-                events.append(CounterEvents.STATUS_CHANGE_TIME_OUT)
+            events.append(CounterEvents.STATUS_CHANGE_TIME_OUT)
         return events
 
     def isRunning(self):

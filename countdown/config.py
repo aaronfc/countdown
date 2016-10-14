@@ -2,4 +2,4 @@
 FULLSCREEN = False
 MAX_HEART_ANGLE = 20
 LOVE_SOCKET_URL = "https://hmu-counter-love.herokuapp.com"
-HMU_EDITION = 29
+HMU_EDITION = 30
